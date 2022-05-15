@@ -1130,6 +1130,7 @@
 			</div>
 
 		</div>
+		<script type="text/javascript" src="../dist/control-panel.js"></script>
 
 		<script>
 			/**
@@ -1207,7 +1208,7 @@
 			var bc = new BroadcastChannel('obs-lower-thirds-channel'); //Send to browser source
 			var bcr = new BroadcastChannel('obs-lower-thirds-channel2'); //Receives from the source
 			var bcf = new BroadcastChannel('obs-lower-thirds-fonts'); //Send custom fonts
-					
+
 
 			var slotDeleted = false;
 
@@ -2078,16 +2079,7 @@
 				document.getElementById("export-data").classList.add("hide");
 			}
 
-			//Load new logo image
-			function showPreview(element){
-				if(element.files.length > 0){
-					var src = URL.createObjectURL(element.files[0]);
-					var preview = document.getElementById("logo-file-preview");
-					document.getElementById("file-preview").classList.remove("no-image");
-					preview.src = src;
-					preview.style.display = "block";
-				}
-			}
+		
 
 			function openLogoPopup(logo, logo_default) {
 				document.getElementById("select-image").classList.remove("hide");
@@ -2630,6 +2622,8 @@
 
 			//Receive data from the source
 			bcr.onmessage = function (ev) {
+				console.log('cp: obs-lower-thirds-channel2', ev.data)
+
 				const received_data = ev.data;
 
 				if (received_data.resend) {
@@ -3290,7 +3284,7 @@
 				} else {
 					$("#alt-4-custom-times").children(".icon-btn").removeClass("active");
 				}
-
+				console.log("sending to obs-lower-thirds-channel other big boi")
 				bc.postMessage({global_animation_time, global_active_time, global_inactive_time, alt_1_switch, alt_1_style, alt_1_name, alt_1_info, alt_1_name_size, alt_1_info_size , alt_1_name_transform, alt_1_info_transform, alt_1_name_weight, alt_1_info_weight, alt_1_name_color, alt_1_info_color, alt_1_style_color_1, alt_1_style_color_2, alt_1_logo_switch, alt_1_background_switch, alt_1_shadows, alt_1_align, alt_1_size, alt_1_margin_h, alt_1_margin_v, alt_1_line_spacing, alt_1_font, alt_2_switch, alt_2_style, alt_2_name, alt_2_info, alt_2_name_size, alt_2_info_size , alt_2_name_transform, alt_2_info_transform, alt_2_name_weight, alt_2_info_weight, alt_2_name_color, alt_2_info_color, alt_2_style_color_1, alt_2_style_color_2, alt_2_logo_switch, alt_2_background_switch, alt_2_shadows, alt_2_align, alt_2_size, alt_2_margin_h, alt_2_margin_v, alt_2_line_spacing, alt_2_font, alt_3_switch, alt_3_style, alt_3_name, alt_3_info, alt_3_name_size, alt_3_info_size , alt_3_name_transform, alt_3_info_transform, alt_3_name_weight, alt_3_info_weight, alt_3_name_color, alt_3_info_color, alt_3_style_color_1, alt_3_style_color_2, alt_3_logo_switch, alt_3_background_switch, alt_3_shadows, alt_3_align, alt_3_size, alt_3_margin_h, alt_3_margin_v, alt_3_line_spacing, alt_3_font, alt_4_switch, alt_4_style, alt_4_name, alt_4_info, alt_4_name_size, alt_4_info_size , alt_4_name_transform, alt_4_info_transform, alt_4_name_weight, alt_4_info_weight, alt_4_name_color, alt_4_info_color, alt_4_style_color_1, alt_4_style_color_2, alt_4_logo_switch, alt_4_background_switch, alt_4_shadows, alt_4_align, alt_4_size, alt_4_margin_h, alt_4_margin_v, alt_4_line_spacing, alt_4_font, alt_1_animation_time, alt_1_active_time, alt_1_inactive_time, alt_2_animation_time, alt_2_active_time, alt_2_inactive_time, alt_3_animation_time, alt_3_active_time, alt_3_inactive_time, alt_4_animation_time, alt_4_active_time, alt_4_inactive_time, alt_1_logo_image, alt_2_logo_image, alt_3_logo_image, alt_4_logo_image, global_oneshot, alt_1_oneshot, alt_2_oneshot, alt_3_oneshot, alt_4_oneshot, alt_1_logo_size, alt_1_shadow_amount, alt_1_corners, alt_1_border_switch, alt_1_border_thickness_amount, alt_1_style_color_3, alt_1_style_color_4, alt_2_logo_size, alt_2_shadow_amount, alt_2_corners, alt_2_border_switch, alt_2_border_thickness_amount, alt_2_style_color_3, alt_2_style_color_4, alt_3_logo_size, alt_3_shadow_amount, alt_3_corners, alt_3_border_switch, alt_3_border_thickness_amount, alt_3_style_color_3, alt_3_style_color_4, alt_4_logo_size, alt_4_shadow_amount, alt_4_corners, alt_4_border_switch, alt_4_border_thickness_amount, alt_4_style_color_3, alt_4_style_color_4, alt_1_preview, alt_2_preview, alt_3_preview, alt_4_preview});
 			}
 
@@ -3298,6 +3292,7 @@
 			function function_send_font() {
 				$.each(fontlist_urls, function(i) {
 					new_font_to_send = fontlist_urls[i];
+					console.log("senidng to obs-lower-thirds-fonts: ", {new_font_to_send})
 					bcf.postMessage({new_font_to_send});
 				});					
 			}
@@ -3306,9 +3301,10 @@
 			document.getElementById('importFile').onchange = function(){
 				var file = this.files[0];
 				var reader = new FileReader();
+				debugger;
 				reader.onload = function(progressEvent){
 					localStorage.clear();
-					
+					debugger;
 					writeLocalStorage(this.result);
 				};
 				reader.readAsText(file);

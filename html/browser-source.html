@@ -79,33 +79,19 @@
 			<div class="graph-2"></div>
 		</div>
 
+		<script type="text/javascript" src="../dist/browser-source.js"></script>
 	 <script type="text/javascript">
-		//Check preview
-		function getUrlParameter(sParam) {
-		    let sPageURL = window.location.search.substring(1),
-		        sURLVariables = sPageURL.split('&'),
-		        sParameterName,
-		        i;
-
-		    for (i = 0; i < sURLVariables.length; i++) {
-		        sParameterName = sURLVariables[i].split('=');
-
-		        if (sParameterName[0] === sParam) {
-		            return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
-		        }
-		    }
-		};
-
 		const mode = getUrlParameter('mode');
 
-		//Check mode and change de channel to receive switches orders or preview orders
+		// Check mode and change de channel to receive switches orders or preview orders
 		if (mode == "preview") {
 			document.body.classList.add('preview');
 		}
 
-		const bcp = new BroadcastChannel('obs-lower-thirds-channel'); //Receives from the source
-		const bcr = new BroadcastChannel('obs-lower-thirds-channel2'); //Send to Control Panel
-		const bcf = new BroadcastChannel('obs-lower-thirds-fonts');
+		const sourceDataChannel = new BroadcastChannel('obs-lower-thirds-channel'); //Receives from the source
+		const commandsChannel = new BroadcastChannel('obs-lower-thirds-channel2'); //Send to Control Panel
+		const fontsChannel = new BroadcastChannel('obs-lower-thirds-fonts');
+
 
 		let alt_1_logo_image_old;
 		let alt_2_logo_image_old;
@@ -161,21 +147,7 @@
 		let alt_3_turnoff;
 		let alt_4_turnoff;
 
-
-		function animationIn(animation) {
-			const elementAnim = document.getElementById(animation);
-			elementAnim.classList.remove("animation-out");
-			void elementAnim.offsetWidth;
-			elementAnim.classList.add("animation-in");
-		}
-
-		function animationOut(animation) {
-			const elementAnim = document.getElementById(animation);
-			elementAnim.classList.remove("animation-in");
-			void elementAnim.offsetWidth;
-			elementAnim.classList.add("animation-out");
-		}
-
+	
 		function activeCount(i) {
 			switch (i) {
 				case "lower-third-1": {
@@ -277,7 +249,7 @@
 					break;
 			}
 		}
-
+	
 		// Can start Active time counter? Start Animation In
 		function startActiveCount(i) {
 		  if (!active1IsOn && i == "lower-third-1") {
@@ -415,8 +387,10 @@
 		}
 
 		///////////////////////////
-		bcp.onmessage = function (ev) {
+		sourceDataChannel.onmessage = function (ev) {
 			const received_data = ev.data;
+			console.log("bs: obs-lower-thirds-channel", received_data)
+
 			const {global_animation_time, global_oneshot} = received_data;
 
 			if (mode != "preview") {
@@ -953,7 +927,8 @@
 			}
 		}
 
-		bcf.onmessage = function (ev) {
+		fontsChannel.onmessage = function (ev) {
+			console.log("bs: obs-lower-thirds-fonts",ev.data)
 			received_data = ev.data;
 			new_font = received_data.new_font_to_send;
 
@@ -1006,8 +981,8 @@
 				inactiveTime4_to_send = 0;
 			}
 
-
-			bcr.postMessage({activeTime1_to_send, inactiveTime1_to_send, activeTime2_to_send, inactiveTime2_to_send, activeTime3_to_send, inactiveTime3_to_send, activeTime4_to_send, inactiveTime4_to_send, alt_1_turnoff, alt_2_turnoff, alt_3_turnoff, alt_4_turnoff});
+            console.log("sending to obs-lower-thirds-channel2 big boi")
+			commandsChannel.postMessage({activeTime1_to_send, inactiveTime1_to_send, activeTime2_to_send, inactiveTime2_to_send, activeTime3_to_send, inactiveTime3_to_send, activeTime4_to_send, inactiveTime4_to_send, alt_1_turnoff, alt_2_turnoff, alt_3_turnoff, alt_4_turnoff});
 
 			alt_1_turnoff = false;
 			alt_2_turnoff = false;
@@ -1023,8 +998,9 @@
 
 		const x = 1; // Refresh time multiplier
 		setInterval(refreshData, x * 1000);
-		bcr.postMessage({resend: true});
-
+		console.log("sending to obs-lower-thirds-channel2", {resend: true})
+		commandsChannel.postMessage({resend: true});
+        // console.log(window.location.host)
 	</script>
 
   </body>

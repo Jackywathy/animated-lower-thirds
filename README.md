@@ -15,6 +15,8 @@ This project is based on Lower thirds in HTML/CSS https://obsproject.com/forum/r
 
 I am a designer and my scripting knowledge is few. I made this tool (Frankenststool) because I needed it and I want to share it. You are welcome to improve it. I am aware that many parts of the code can make any expert cry. I'm really sorry :P
 
+## Build Instructions
+After the refactor, the project now uses typescript, which is transpiled into javascript before loaded into obs's Browser Source / Panel. To build the requiste js file for the html files required, install typescript from [here](https://www.typescriptlang.org/), and use `npx tsx` in the root directory, which should build the javascript files in the `dist/` folder.
 
 ## Donations.
 If you like the extension and you want to support the development - please consider to donate by [Paypal](https://paypal.me/noealdac). Any donations are greatly appreciated.
