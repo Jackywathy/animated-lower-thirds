@@ -1,3 +1,5 @@
+import header from '../html/browser-source.html'
+
 const sourceToPanelChannelName = 'obs-lower-thirds-channel'
 
 const sourceDataChannel = new BroadcastChannel(sourceToPanelChannelName); //Receives from the source

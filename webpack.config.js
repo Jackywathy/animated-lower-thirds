@@ -1,7 +1,12 @@
 const path = require('path');
+const { sources } = require('webpack');
 
 module.exports = {
-  entry: './src/index.ts',
+  entry: {
+    'browser-source2': './html/browser-source.html',
+    'browser-source': './src/browser-source.ts',
+    'control-panel': './src/control-panel.ts',
+  },
   module: {
     rules: [
       {
@@ -12,6 +17,9 @@ module.exports = {
       {
         test: /\.html$/i,
         loader: "html-loader",
+        options: {
+          minimize: true,
+        }
       }
     ],
   },
@@ -19,7 +27,8 @@ module.exports = {
     extensions: ['.tsx', '.ts', '.js', '.html'],
   },
   output: {
-    filename: 'bundle.js',
+    filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist'),
+    clean: true,
   },
 };
