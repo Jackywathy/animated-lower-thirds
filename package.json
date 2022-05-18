@@ -1,0 +1,22 @@
+{
+  "name": "animated-lower-thirds",
+  "version": "1.0.0",
+  "description": "Animated Lower Thirds with dockable Control Panel - OBS Tool",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jackywathy/animated-lower-thirds.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Jackywathy/animated-lower-thirds/issues"
+  },
+  "homepage": "https://github.com/Jackywathy/animated-lower-thirds#readme",
+  "devDependencies": {
+    "webpack": "^5.72.1",
+    "webpack-cli": "^4.9.2"
+  }
+}
