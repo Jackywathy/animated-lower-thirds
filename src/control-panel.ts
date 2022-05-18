@@ -10,3 +10,5 @@
             preview.style.display = "block";
         }
     }
+
+export {}
