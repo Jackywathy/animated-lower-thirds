@@ -1,19 +1,8 @@
 // @ts-nocheck
+import {getUrlParameter, animationOut, animationIn} from "./browser-source-fixed.ts"
+
 //Check preview
-function getUrlParameter(sParam) {
-    let sPageURL = window.location.search.substring(1),
-        sURLVariables = sPageURL.split('&'),
-        sParameterName,
-        i;
 
-    for (i = 0; i < sURLVariables.length; i++) {
-        sParameterName = sURLVariables[i].split('=');
-
-        if (sParameterName[0] === sParam) {
-            return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
-        }
-    }
-};
 
 const mode = getUrlParameter('mode');
 
@@ -80,20 +69,6 @@ let alt_2_turnoff;
 let alt_3_turnoff;
 let alt_4_turnoff;
 
-
-function animationIn(animation) {
-    const elementAnim = document.getElementById(animation);
-    elementAnim.classList.remove("animation-out");
-    void elementAnim.offsetWidth;
-    elementAnim.classList.add("animation-in");
-}
-
-function animationOut(animation) {
-    const elementAnim = document.getElementById(animation);
-    elementAnim.classList.remove("animation-in");
-    void elementAnim.offsetWidth;
-    elementAnim.classList.add("animation-out");
-}
 
 function activeCount(i) {
     switch (i) {
